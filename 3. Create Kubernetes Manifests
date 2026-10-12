@@ -1,0 +1,96 @@
+<img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
+
+# Create Kubernetes Manifests
+
+**Project Link:** [View Project](https://nextwork.ai/projects/ccc2aecf-ba9e-5ebe-98ec-e0c4aec9c4ea)
+
+**Author:** Toluwalope Oni  
+**Email:** toluwalope9@gmail.com
+
+---
+
+![Image](https://nextwork.ai/compassionate_orange_mysterious_tuke/uploads/ccc2aecf-ba9e-5ebe-98ec-e0c4aec9c4ea_b01876555)
+
+## Introducing Today's Project!
+
+In this project, I will create the key files called manifests that tells Kubernetes how to deploy and manage containerized backend!
+
+### Tools and concepts
+
+I used Amazon EKS, eksctl, an EC2 instance, Amazon ECR, and git to pull our application repository, build a secure container image, host it within a private container registry, and provision a fully managed Kubernetes cluster. Key concepts include using manifests to tell Kubernetes what to do declaratively, mapping network connections, and linking Deployments and Services together using labels and selectors to ensure high availability, automatic scaling, and reliable traffic routing.
+
+### Project reflection
+
+I chose to do this project today because I want to master automated orchestration and transition into advanced CI/CD pipeline structures with Amazon EKS. Something that would make learning with NextWork even better is introducing more hands-on scenarios where we configure continuous delivery tools like GitHub Actions directly to deploy these manifests to EKS!
+
+This project took me approximately 1hr... The was no major challenge in setting up. My favourite part was seeing the ease with which kubernetes used the declarative manifests to link deployments and services together seamlessly using labels and selectors and how it used the ECR link to pull the container image from the ECR, 
+
+## Project Set Up
+
+### Kubernetes cluster
+
+To set up today's project, I launched a Kubernetes cluster. Steps I took to do this included using amazon EKS to launch an EKS cluster, the reason is because it is easier to use amazon EKS to work with Kubernetes itself. I am using eksctl - a tool specifically for working with EKS in the command line.
+
+I used this command:
+
+eksctl create cluster \
+--name nextwork-eks-cluster \
+--nodegroup-name nextwork-nodegroup \
+--node-type t3.micro \
+--nodes 3 \
+--nodes-min 1 \
+--nodes-max 3 \
+--version 1.33
+
+### Backend code
+
+I retrieved the backend that I plan to deploy. I retrieved backend code by using the git clone command - git clone <HTTPS URL>
+to clone my team member's repository.
+
+An app's backend means the "brain" of an application. It's where the main work is done - where our app processes user requests and stores and retrieves data. Unlike frontend code, which is what users see and interact with, backend code works on the server side (i.e. in the background) to make sure your app behaves as expected (e.g. loads a new page) when a user does things like clicking on buttons.
+
+### Container image
+
+Once I cloned the backend code, I built a container image because a container image lets Docker set up multiple, identical containers so your application runs consistently across different environments.
+Kuberenetes does not work with backend code directly, it works with container images that are already built from backend code.
+ I used the command "docker build -t nextwork-flask-backend ."  to build my Docker image
+
+I also pushed the container image to a container registry, because that is where kubernetes will pull the image from. To push the image to ECR, I went back to my ECR repository, 
+
+- I selected my new repository.
+
+- I Select View push commands.
+
+- I copied it and used it in the EC2 instance
+
+## Manifest files
+
+Kubernetes manifests are sets of instructions that tells Kubernetes how to run your app. Kubernetes uses it to know what your app needs, like which containers to run, how many copies to create, and how much memory to allocate.... Manifests are helpful because, in general (even outside of Kubernetes), a manifest is an instruction/manual that tells a system how to set up and manage something.
+
+Without manifests, Kubernetes wouldn’t know how to set up and manage your app automatically. This means you'd have to manually configure each container every time you deploy, which would be confusing, error-prone, and hard to repeat. Manifests make deployment simple, clear, and consistent.
+
+A Kubernetes deployment manages the lifecycle, the scaling, the desired state, the healing of pods to keep the application healthy.
+
+The container image URL in my Deployment manifest tells Kubernetes where my container image is stored so that it can pull the image and run it as a live container in the cluster.
+
+![Image](https://nextwork.ai/compassionate_orange_mysterious_tuke/uploads/ccc2aecf-ba9e-5ebe-98ec-e0c4aec9c4ea_b01876554)
+
+## Service Manifest
+
+A Kubernetes Service exposes my application(pods) to the outside world and route traffic to it. It is like a traffic controller that keeps traffic flowing to the right container on my app... You need a Service manifest to tell kubernetes to create or update the service (traffic controller). In it, you tell the service, which pods to target, the kind of traffic to accept, and the port to listen on.
+
+My Service manifest sets up..kubernetes to expose my app to the outside world or other parts of my system
+
+![Image](https://nextwork.ai/compassionate_orange_mysterious_tuke/uploads/ccc2aecf-ba9e-5ebe-98ec-e0c4aec9c4ea_b01876555)
+
+## Deployment Manifest
+
+Annotating the Deployment manifest helped me understand what each line of the manifest file is doing. This is important in configuring the overall behaviour of the appliction.
+
+A notable line in the Deployment manifest is the number of replicas, which means the number of identical pods(instances) of an app to run. Pods are relevant to this because pods are the smallest unit kubernetes can run.
+
+![Image](https://nextwork.ai/compassionate_orange_mysterious_tuke/uploads/ccc2aecf-ba9e-5ebe-98ec-e0c4aec9c4ea_6aae73e71)
+
+---
+
+*Built with [NextWork](https://nextwork.ai) - [View this project](https://nextwork.ai/projects/ccc2aecf-ba9e-5ebe-98ec-e0c4aec9c4ea)*
